@@ -3,6 +3,7 @@
 
 #standard
 import os
+import platform
 import subprocess
 import sys
 import shutil
@@ -68,8 +69,13 @@ def get_b2j():
         shutil.copyfile(tungAsmPath, B2J_DIR + tungAsmFile)
         print('B2J install successful!')
 
+    # On linux, give execute permissions to B2J
+    if platform.system() == 'Linux':
+        command = ['chmod', '+x', B2J_DIR + 'BoardToJson.exe']
+        subprocess.call(command, shell = False)
 
-# Deletes b2j dir and everything therein
+
+# Deletes the b2j dir and everything therein
 # if for some reason B2J_DIR points at a file, get rid of that too
 def delete_b2j():
     if os.path.exists(B2J_DIR):
@@ -81,9 +87,11 @@ def delete_b2j():
 
 # convert tung board to json
 def board_to_json(boardPath, jsonPath):
-    subprocess.run([B2J_DIR + 'BoardToJson.exe', '-i', boardPath, '-o', jsonPath])
+    command = [B2J_DIR + 'BoardToJson.exe', '-i', boardPath, '-o', jsonPath]
+    subprocess.call(command, shell = False, stdout = subprocess.DEVNULL)
 
 
 # convert json to tung board
 def json_to_board(jsonPath, boardPath):
-    subprocess.run([B2J_DIR + 'BoardToJson.exe', '-i', jsonPath, '-o', boardPath])
+    command = [B2J_DIR + 'BoardToJson.exe', '-i', jsonPath, '-o', boardPath]
+    subprocess.call(command, shell = False, stdout = subprocess.DEVNULL)
