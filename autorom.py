@@ -20,12 +20,12 @@ def build_option_parser():
 
     parser.add_argument(
         '-u', '--updateb2j', action = 'store_true',
-        help = 'Re-install BTJ (board to json) binaries')
+        help = 'Re-install BTJ (board to json) binaries.')
 
     parser.add_argument(
         '-i', '--input', type = str,
         help = 'Input file. Extension determines parsing behaviour, this is ' +
-               'a mandatory parameter')
+               'a mandatory parameter.')
 
     parser.add_argument(
         '-l', '--listrom', action = 'store_true',
