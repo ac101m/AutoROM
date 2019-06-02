@@ -2,12 +2,14 @@
 
 
 # standard
+import os
 import argparse
 import json
+import tkinter as tk
 
 
 # this project
-from autorom_b2j import *
+import autorom_b2j as b2j
 
 
 # Set up command line argument parser
@@ -30,18 +32,18 @@ def main():
     # User initiated update of b2j
     if args.updateb2j:
         print("Removing B2J binaries...")
-        delete_b2j()
+        b2j.uninstall()
 
     # Check that boardtojson (b2j) is present, if not, get it
-    if not b2j_present():
+    if not b2j.present():
         print("B2J binaries not present, installing...")
-        get_b2j()
+        b2j.install()
 
     # Try to convert a board [TEMP]
     boardDir = os.path.dirname(__file__) + '/boards/'
     tungBoard = boardDir + 'rom-matrix-8kB.tungboard'
     jsonBoard = boardDir + 'rom-matrix-8kB.json'
-    board_to_json(tungBoard, jsonBoard)
+    b2j.board_to_json(tungBoard, jsonBoard)
 
 
 # make this importable

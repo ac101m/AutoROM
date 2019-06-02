@@ -14,8 +14,8 @@ import urllib.request
 
 
 # this project
-from autorom_utils import *
-from autorom_b2j_md5 import *
+import autorom_util as util
+import autorom_b2j_md5 as md5
 
 
 # Where to find board to json
@@ -25,7 +25,7 @@ __B2J_DIR = os.path.dirname(__file__) + '/BoardToJson/'
 
 # Return true if boardtojson is present
 # more comprehensive checks can be implemented later if need be
-def b2j_present():
+def present():
     if os.path.exists(__B2J_DIR):
         if os.path.isdir(__B2J_DIR):
             if len(os.listdir(__B2J_DIR)) != 0:
@@ -34,20 +34,20 @@ def b2j_present():
 
 
 # Install boardtojson
-def get_b2j():
+def install():
     if not os.path.exists(__B2J_DIR):
         os.mkdir(__B2J_DIR)
 
     # Download board to json binaries
     b2jZipPath = __B2J_DIR + '/b2j.zip'
-    urllib.request.urlretrieve(B2J_URL, b2jZipPath)
+    urllib.request.urlretrieve(__B2J_URL, b2jZipPath)
 
     # Check file hashes against known good md5 checksums
-    if b2j_md5_fail(b2jZipPath):
+    if md5.check(b2jZipPath):
         print("Oshit son! looks like these binaries might be dodgy!")
-        if not yes_no_prompt('Continue? '):
+        if not util.yes_no_prompt('Continue? '):
             print('B2J install failed, quitting')
-            delete_b2j()
+            uninstall()
             sys.exit()
 
     # Decompress the zip
@@ -58,11 +58,11 @@ def get_b2j():
     # Prompt user for TUNG install path
     tungAsmFile = 'Assembly-CSharp.dll'
     tungDir = filedialog.askdirectory(title = 'Where is TUNG installed?')
-    tungAsmPath = find_file(tungAsmFile, tungDir)
+    tungAsmPath = util.find_file(tungAsmFile, tungDir)
     if tungAsmPath == '':
         print('ERROR, unable to locate ' + tungAsmFile)
         print('B2J install failed, quitting')
-        delete_b2j()
+        uninstall()
         sys.exit()
     else:
         print('Located game assembly at ' + tungAsmPath)
@@ -77,7 +77,7 @@ def get_b2j():
 
 # Deletes the b2j dir and everything therein
 # if for some reason B2J_DIR points at a file, get rid of that too
-def delete_b2j():
+def uninstall():
     if os.path.exists(__B2J_DIR):
         if os.path.isdir(__B2J_DIR):
             shutil.rmtree(__B2J_DIR)
