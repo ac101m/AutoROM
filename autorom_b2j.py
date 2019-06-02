@@ -25,7 +25,7 @@ __B2J_DIR = os.path.dirname(__file__) + '/BoardToJson/'
 
 # Return true if boardtojson is present
 # more comprehensive checks can be implemented later if need be
-def present():
+def installed():
     if os.path.exists(__B2J_DIR):
         if os.path.isdir(__B2J_DIR):
             if len(os.listdir(__B2J_DIR)) != 0:

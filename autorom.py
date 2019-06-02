@@ -35,7 +35,7 @@ def main():
         b2j.uninstall()
 
     # Check that boardtojson (b2j) is present, if not, get it
-    if not b2j.present():
+    if not b2j.installed():
         print("B2J binaries not present, installing...")
         b2j.install()
 
