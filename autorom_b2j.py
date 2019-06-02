@@ -19,27 +19,27 @@ from autorom_b2j_md5 import *
 
 
 # Where to find board to json
-B2J_URL = 'https://github.com/Stenodyon/BoardToJson/releases/download/1.0/BoardToJson.zip'
-B2J_DIR = os.path.dirname(__file__) + '/BoardToJson/'
+__B2J_URL = 'https://github.com/Stenodyon/BoardToJson/releases/download/1.0/BoardToJson.zip'
+__B2J_DIR = os.path.dirname(__file__) + '/BoardToJson/'
 
 
 # Return true if boardtojson is present
 # more comprehensive checks can be implemented later if need be
 def b2j_present():
-    if os.path.exists(B2J_DIR):
-        if os.path.isdir(B2J_DIR):
-            if len(os.listdir(B2J_DIR)) != 0:
+    if os.path.exists(__B2J_DIR):
+        if os.path.isdir(__B2J_DIR):
+            if len(os.listdir(__B2J_DIR)) != 0:
                 return True
     return False
 
 
 # Install boardtojson
 def get_b2j():
-    if not os.path.exists(B2J_DIR):
-        os.mkdir(B2J_DIR)
+    if not os.path.exists(__B2J_DIR):
+        os.mkdir(__B2J_DIR)
 
     # Download board to json binaries
-    b2jZipPath = B2J_DIR + '/b2j.zip'
+    b2jZipPath = __B2J_DIR + '/b2j.zip'
     urllib.request.urlretrieve(B2J_URL, b2jZipPath)
 
     # Check file hashes against known good md5 checksums
@@ -52,7 +52,7 @@ def get_b2j():
 
     # Decompress the zip
     zip_ref = zipfile.ZipFile(b2jZipPath, 'r')
-    zip_ref.extractall(B2J_DIR)
+    zip_ref.extractall(__B2J_DIR)
     zip_ref.close()
 
     # Prompt user for TUNG install path
@@ -66,32 +66,32 @@ def get_b2j():
         sys.exit()
     else:
         print('Located game assembly at ' + tungAsmPath)
-        shutil.copyfile(tungAsmPath, B2J_DIR + tungAsmFile)
+        shutil.copyfile(tungAsmPath, __B2J_DIR + tungAsmFile)
         print('B2J install successful!')
 
     # On linux, give execute permissions to B2J
     if platform.system() == 'Linux':
-        command = ['chmod', '+x', B2J_DIR + 'BoardToJson.exe']
+        command = ['chmod', '+x', __B2J_DIR + 'BoardToJson.exe']
         subprocess.call(command, shell = False)
 
 
 # Deletes the b2j dir and everything therein
 # if for some reason B2J_DIR points at a file, get rid of that too
 def delete_b2j():
-    if os.path.exists(B2J_DIR):
-        if os.path.isdir(B2J_DIR):
-            shutil.rmtree(B2J_DIR)
+    if os.path.exists(__B2J_DIR):
+        if os.path.isdir(__B2J_DIR):
+            shutil.rmtree(__B2J_DIR)
         else:
-            os.remove(B2J_DIR)
+            os.remove(__B2J_DIR)
 
 
 # convert tung board to json
 def board_to_json(boardPath, jsonPath):
-    command = [B2J_DIR + 'BoardToJson.exe', '-i', boardPath, '-o', jsonPath]
+    command = [__B2J_DIR + 'BoardToJson.exe', '-i', boardPath, '-o', jsonPath]
     subprocess.call(command, shell = False, stdout = subprocess.DEVNULL)
 
 
 # convert json to tung board
 def json_to_board(jsonPath, boardPath):
-    command = [B2J_DIR + 'BoardToJson.exe', '-i', jsonPath, '-o', boardPath]
+    command = [__B2J_DIR + 'BoardToJson.exe', '-i', jsonPath, '-o', boardPath]
     subprocess.call(command, shell = False, stdout = subprocess.DEVNULL)
