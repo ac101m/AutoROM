@@ -28,8 +28,8 @@ def get_install_dir():
     while not __valid_tung_dir(tungDir):
         tungDir = filedialog.askdirectory(title = 'Where is TUNG installed?')
 
-    env.set_var(__TUNG_DIR_VAR, tungdir)
-    return tungdir
+    env.set_var(__TUNG_DIR_VAR, tungDir)
+    return tungDir
 
 
 def find_file(name):
