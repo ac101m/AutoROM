@@ -31,4 +31,4 @@ def find_file(fileName, dir):
         for file in files:
             if os.path.basename(file) == fileName:
                 return os.path.join(root, file)
-    return ''
+    return None
