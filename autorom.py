@@ -28,6 +28,10 @@ def build_option_parser():
                'a mandatory parameter')
 
     parser.add_argument(
+        '-l', '--listrom', action = 'store_true',
+        help = 'List information for all available ROM boards.')
+
+    parser.add_argument(
         '-o', '--output', type = str,
         help = 'Output file. By default, the filename will be a combination ' +
                'of the selected ROM board and the filename of the data file ' +
