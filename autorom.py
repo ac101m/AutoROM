@@ -27,6 +27,12 @@ def build_option_parser():
         help = 'Input file. Extension determines parsing behaviour, this is ' +
                'a mandatory parameter')
 
+    parser.add_argument(
+        '-o', '--output', type = str,
+        help = 'Output file. By default, the filename will be a combination ' +
+               'of the selected ROM board and the filename of the data file ' +
+               'from which it was populated.')
+
     return parser
 
 
