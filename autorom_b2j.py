@@ -8,14 +8,13 @@ import subprocess
 import sys
 import shutil
 import zipfile
-import tkinter as tk
-from tkinter import filedialog
 import urllib.request
 
 
 # this project
 import autorom_util as util
 import autorom_b2j_md5 as md5
+import autorom_tung as tung
 
 
 # Where to find board to json
@@ -51,15 +50,14 @@ def install():
             sys.exit()
 
     # Decompress the zip
-    zip_ref = zipfile.ZipFile(b2jZipPath, 'r')
-    zip_ref.extractall(__B2J_DIR)
-    zip_ref.close()
+    zip = zipfile.ZipFile(b2jZipPath, 'r')
+    zip.extractall(__B2J_DIR)
+    zip.close()
 
     # Prompt user for TUNG install path
     tungAsmFile = 'Assembly-CSharp.dll'
-    tungDir = filedialog.askdirectory(title = 'Where is TUNG installed?')
-    tungAsmPath = util.find_file(tungAsmFile, tungDir)
-    if tungAsmPath == '':
+    tungAsmPath = tung.find_file(tungAsmFile)
+    if tungAsmPath == None:
         print('ERROR, unable to locate ' + tungAsmFile)
         print('B2J install failed, quitting')
         uninstall()
@@ -69,7 +67,7 @@ def install():
         shutil.copyfile(tungAsmPath, __B2J_DIR + tungAsmFile)
         print('B2J install successful!')
 
-    # On linux, give execute permissions to B2J
+    # On linux, give execute permissions to B2J executable
     if platform.system() == 'Linux':
         command = ['chmod', '+x', __B2J_DIR + 'BoardToJson.exe']
         subprocess.call(command, shell = False)
