@@ -1,3 +1,4 @@
 __pycache__/
 BoardToJson/
 boards/*.json
+env.json
