@@ -27,7 +27,7 @@ def get_board_ids():
 
 # Get ROM path from ID
 def get_path(id):
-    return __BOARD_REGISTRY[id]['path']
+    return __BOARD_DIR + __BOARD_REGISTRY[id]['path']
 
 
 # Get ROM capacity from ID
