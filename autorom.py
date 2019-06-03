@@ -12,30 +12,44 @@ import tkinter as tk
 # this project
 import autorom_b2j as b2j
 from autorom_image import rom_image
+import autorom_rom as rom
 
 
 # Set up command line argument parser
 def build_option_parser():
-    parser = argparse.ArgumentParser(description = 'Generate big ROMs for tung')
+    parser = argparse.ArgumentParser(
+        description = 'AutoROM is a utility for importing files into TUNG ' +
+                      'as read-only memory.')
 
+    # Update board to json from github (optional, exclusive)
     parser.add_argument(
         '-u', '--updateb2j', action = 'store_true',
-        help = 'Re-install BTJ (board to json) binaries.')
+        help = "Re-install B2J (board to json) binaries from Stenyodon's " +
+               'github. (thanks sten! <3)')
 
+    # Select input file (mandatory)
     parser.add_argument(
         '-i', '--input', type = str,
         help = 'Input file. Extension determines parsing behaviour, this is ' +
                'a mandatory parameter.')
 
+    # List ROM board info (optional, exclusive)
     parser.add_argument(
         '-l', '--listrom', action = 'store_true',
         help = 'List information for all available ROM boards.')
 
+    # Select ROM board to load to (mandatory)
+    parser.add_argument(
+        '-r', '--romtype', choices = rom.get_board_ids(),
+        help = 'Name of ROM board to load data into. This is mandatory ' +
+               'parameter.')
+
+    # Select output file (optional)
     parser.add_argument(
         '-o', '--output', type = str,
         help = 'Output file. By default, the filename will be a combination ' +
-               'of the selected ROM board and the filename of the data file ' +
-               'from which it was populated.')
+               'of the selected ROM board and the name of the file from ' +
+               'which it was initialised.')
 
     return parser
 
@@ -48,8 +62,15 @@ def main():
 
     # User initiated update of b2j
     if args.updateb2j:
-        print("Removing B2J binaries...")
+        print("Reinstalling B2J binaries...")
         b2j.uninstall()
+        b2j.install()
+        return
+
+    # User requested board info
+    if args.listrom:
+        rom.print_all()
+        return
 
     # Check that boardtojson (b2j) is present, if not, get it
     if not b2j.installed():
@@ -58,12 +79,16 @@ def main():
 
     # Get input file as ROM image
     if args.input == None:
-        print("ERROR, no input file specified, please specify an input file")
+        print("ERROR: No input file specified, please specify an input file")
+        sys.exit()
+
+    # Get ROM type
+    if args.romtype == None:
+        print('ERROR: No ROM type specified, please specify a ROM type')
         sys.exit()
 
     # Decode the input file
     image = rom_image(args.input, 512)
-    image.print_all()
 
 
 # make this importable
