@@ -3,12 +3,14 @@
 
 # Standard
 import os
+import sys
 import json
 
 
 # This project
-import autorom_image as image
+import autorom_image as rom_image
 import autorom_util as util
+import autorom_b2j as b2j
 
 
 # Board registry info
@@ -27,7 +29,7 @@ def get_board_ids():
 
 # Get ROM path from ID
 def get_path(id):
-    return __BOARD_DIR + __BOARD_REGISTRY[id]['path']
+    return __BOARD_DIR + '/' + __BOARD_REGISTRY[id]['path']
 
 
 # Get ROM capacity from ID
@@ -44,7 +46,65 @@ def print_all():
         print(__BOARD_REGISTRY[key])
 
 
-# Class describes a board
-class board:
-     def __init__(self, type, image):
-         pass
+# Class serves as interface for modifying board contents
+class tung_rom_board:
+    data = None
+    capacity = None
+    romID = None
+
+
+    # Initialise
+    def __init__(self, romID):
+        self.romID = romID
+        self.capacity = get_capacity(romID)
+
+        # Convert board to JSON and load
+        boardPath = get_path(romID)
+        jsonPath, junk = os.path.splitext(boardPath)
+        jsonPath += '.json'
+        b2j.board_to_json(boardPath, jsonPath)
+        self.data = json.loads(open(jsonPath, 'r').read())
+
+        # Select set_bit method for given ROM
+        setBitMethodName = 'set_bit_json_' + romID
+        try:
+            setattr(self, 'set_bit_json', getattr(self, setBitMethodName))
+        except:
+            print("ERROR: Failed to find set_bit implementation for " + romID)
+            sys.exit(1)
+
+
+    # Load image
+    def load_image(self, image):
+        self.set_byte(0, 0x81)
+
+
+    # Set byte
+    def set_byte(self, index, value):
+        bitMask = 0x80
+        for i in range(0, 8):
+            bitMask = 0x80 >> i
+            if value & bitMask != 0:
+                self.set_bit((index * 8) + i)
+
+
+    # Set bit
+    def set_bit(self, index):
+        if index < self.capacity * 8:
+            self.set_bit_json(index)
+        else:
+            print('WARNING: Bit ' + str(index) + ' out of range')
+
+
+    # Save ROM to output file
+    def save_tungboard(self, path):
+        with open(path, 'w') as file:
+            file.write("I'm not a tung board!")
+
+
+
+#====[SET BIT IMPLEMENTATIONS HERE]===========================================//
+
+    # Set bit
+    def set_bit_json_matrix_rom_16x16(self, index):
+        print('WARNING: set_bit_json_matrix_rom_16x16 not yet implemented!')
