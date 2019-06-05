@@ -10,6 +10,7 @@ import tkinter as tk
 
 
 # this project
+import autorom_env as env
 import autorom_b2j as b2j
 from autorom_image import RomImage
 import autorom_board as board
@@ -62,7 +63,7 @@ def main():
 
     # User initiated update of b2j
     if args.clean:
-        print("Reinstalling B2J binaries...")
+        print("Cleaning local files...")
         b2j.uninstall()
         board.clean()
         env.clean()
