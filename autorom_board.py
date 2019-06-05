@@ -123,7 +123,7 @@ class TungRomEncoder:
         jsonData = self._encode_json_data(image)
 
         # Write new json data to temporary
-        tmpJsonPath = get_board_path(self.boardID) + '.tmp.json'
+        tmpJsonPath = outputPath + '.json'
         with open(tmpJsonPath, 'w') as file:
             file.write(json.dumps(jsonData))
 
