@@ -57,7 +57,7 @@ def print_all():
 
 
 # Class serves as interface for modifying board contents
-class tung_rom_board:
+class TungRomEncoder:
     jsonPath = None
     boardPath = None
     baseJsonData = None
