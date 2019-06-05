@@ -24,9 +24,8 @@ def build_option_parser():
 
     # Update board to json from github (optional, exclusive)
     parser.add_argument(
-        '-u', '--updateb2j', action = 'store_true',
-        help = "Re-install B2J (board to json) binaries from Stenyodon's " +
-               'github. (thanks sten! <3)')
+        '-c', '--clean', action = 'store_true',
+        help = "Clean all local files.")
 
     # Select input file (mandatory)
     parser.add_argument(
@@ -62,10 +61,9 @@ def main():
     root.withdraw()
 
     # User initiated update of b2j
-    if args.updateb2j:
+    if args.clean:
         print("Reinstalling B2J binaries...")
         b2j.uninstall()
-        b2j.install()
         return
 
     # User requested board info
