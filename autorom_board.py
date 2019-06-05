@@ -24,6 +24,16 @@ __BOARD_REGISTRY = json.loads(open(__BOARD_REGISTRY_PATH, 'r').read())
 class MaxSizeException(Exception): pass
 
 
+# Clean all board json files from the board directory
+def clean():
+    for id in get_board_ids():
+        try:
+            os.remove(get_json_path(id))
+            print('Cleaned ' + get_json_path(id))
+        except FileNotFoundError:
+            pass
+
+
 # Get board path from ID
 def get_board_path(boardID):
     return __BOARD_DIR + '/' + __BOARD_REGISTRY[boardID]['path']

@@ -64,6 +64,7 @@ def main():
     if args.clean:
         print("Reinstalling B2J binaries...")
         b2j.uninstall()
+        board.clean()
         return
 
     # User requested board info
