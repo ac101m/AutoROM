@@ -11,7 +11,7 @@ class MaxSizeException(Exception): pass
 
 
 # Class stores a memory image as a list of bits and handles file parsing
-class rom_image:
+class RomImage:
     data = []
     maxSize = None
 

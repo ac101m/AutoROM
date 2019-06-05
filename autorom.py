@@ -11,7 +11,7 @@ import tkinter as tk
 
 # this project
 import autorom_b2j as b2j
-from autorom_image import rom_image
+from autorom_image import RomImage
 import autorom_rom as rom
 from autorom_rom import TungRomEncoder
 
@@ -89,7 +89,7 @@ def main():
         sys.exit()
 
     # Decode the input file
-    image = rom_image(rom.get_capacity(args.romtype), args.input)
+    image = RomImage(rom.get_capacity(args.romtype), args.input)
     encoder = TungRomEncoder(args.romtype)
 
     # If an output file was specified, use that
