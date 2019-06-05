@@ -96,7 +96,7 @@ class RomImage:
 
     # Set byte at specific position within image
     def set_byte(self, i, byte):
-        if not self._fits(i + 8)
+        if not self._fits(i + 8):
             raise MaxSizeException(
                 'Failed to set byte in image, maximum size reached.')
         self._expand_data_array(i + 8)
