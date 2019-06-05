@@ -85,11 +85,11 @@ def uninstall():
 
 # convert tung board to json
 def board_to_json(boardPath, jsonPath):
-    command = [__B2J_DIR + 'BoardToJson.exe', '-i', boardPath, '-o', jsonPath]
+    command = [__B2J_DIR + 'BoardToJson.exe', boardPath, '-i', '-o', jsonPath]
     subprocess.call(command, shell = False, stdout = subprocess.DEVNULL)
 
 
 # convert json to tung board
 def json_to_board(jsonPath, boardPath):
-    command = [__B2J_DIR + 'BoardToJson.exe', '-i', jsonPath, '-o', boardPath]
+    command = [__B2J_DIR + 'BoardToJson.exe', jsonPath, '-i', '-o', boardPath]
     subprocess.call(command, shell = False, stdout = subprocess.DEVNULL)
