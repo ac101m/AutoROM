@@ -46,31 +46,66 @@ class RomImage:
             sys.exit()
 
 
+    # Returns true if the given size is valid
+    def _fits(self, testSize):
+        if self.maxSize is not None:
+            if testSize > self.maxSize:
+                return False
+        return True
+
+
+    # Expand the data array to a given size
+    def _expand_data_array(self, newSize):
+        if newSize <= len(self.data):
+            return
+        if not self._fits(newSize):
+            raise MaxSizeException(
+                'Failed to expand data array, maximum size reached.')
+        self.data += [False] * (i - len(self.data))
+
+
     # Append bit to current data
     def append_bit(self, bit):
-        if len(self.data) + 1 <= self.maxSize:
-            self.data.append(bit)
-        else:
+        if not self._fits(len(self.data) + 1):
             raise MaxSizeException(
                 'Failed to append bit to image, maximum size reached.')
+        self.data.append(bit)
 
 
     # Append byte to current data
     def append_byte(self, byte):
-        if len(self.data) + 8 <= self.maxSize:
-            for i in range(0, 8):
-                bitMask = 0x80 >> i
-                if byte & bitMask:
-                    self.append_bit(True)
-                else:
-                    self.append_bit(False)
-        else:
+        if not self._fits(len(self.data) + 8):
             raise MaxSizeException(
                 'Failed to append byte to image, maximum size reached.')
+        for i in range(0, 8):
+            bitMask = 0x80 >> i
+            if byte & bitMask:
+                self.append_bit(True)
+            else:
+                self.append_bit(False)
 
 
     # Set bit at specific position within image
+    def set_bit(self, i, bit):
+        if not self._fits(i + 1):
+            raise MaxSizeException(
+                'Failed to set bit in image, maximum size reached.')
+        self._expand_data_array(i + 1)
+        self.data[i] = bit
+
+
     # Set byte at specific position within image
+    def set_byte(self, i, byte):
+        if not self._fits(i + 8)
+            raise MaxSizeException(
+                'Failed to set byte in image, maximum size reached.')
+        self._expand_data_array(i + 8)
+        for j in range(0, 8):
+            bitMask = 0x80 >> j
+            if byte & bitMask:
+                self.set_bit(i + j, True)
+            else:
+                self.set_bit(i + j, False)
 
 
     # Print image contents
