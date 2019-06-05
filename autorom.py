@@ -13,6 +13,7 @@ import tkinter as tk
 import autorom_b2j as b2j
 from autorom_image import rom_image
 import autorom_rom as rom
+from autorom_rom import tung_rom_board
 
 
 # Set up command line argument parser
@@ -88,7 +89,18 @@ def main():
         sys.exit()
 
     # Decode the input file
-    image = rom_image(args.input, 512)
+    image = rom_image(rom.get_capacity(args.romtype), args.input)
+    board = tung_rom_board(args.romtype)
+
+    # If an output file was specified, use that
+    # Otherwise, generate automatic name
+    outputFile = args.output
+    if outputFile == None:
+        inName, inExt = os.path.splitext(args.input)
+        outputFile = args.romtype + '(' + inName + ').tungboard'
+
+    # Output the ROM
+    board.encode(outputFile, image)
 
 
 # make this importable
