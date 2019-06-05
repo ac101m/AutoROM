@@ -25,11 +25,6 @@ def __load():
             __ENV_DICT = json.load(file)
 
 
-# Print the entire environment variable dictionary
-def print_all():
-    print(__ENV_DICT)
-
-
 # Check if variable exists
 def __var_exists(name):
     if name in __ENV_DICT:
@@ -49,6 +44,18 @@ def get_var(name):
         return __ENV_DICT[name]
     else:
         return None
+
+# Delete all board variables
+def clean():
+    try:
+        os.remove(__ENV_PATH)
+    except FileNotFoundError:
+        pass
+
+
+# Print the entire environment variable dictionary
+def print_all():
+    print(__ENV_DICT)
 
 
 # Load dictionary from file on import

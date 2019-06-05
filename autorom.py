@@ -65,6 +65,7 @@ def main():
         print("Reinstalling B2J binaries...")
         b2j.uninstall()
         board.clean()
+        env.clean()
         return
 
     # User requested board info
