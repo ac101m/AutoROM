@@ -12,8 +12,8 @@ import tkinter as tk
 # this project
 import autorom_b2j as b2j
 from autorom_image import RomImage
-import autorom_rom as rom
-from autorom_rom import TungRomEncoder
+import autorom_board as board
+from autorom_board import TungRomEncoder
 
 
 # Set up command line argument parser
@@ -41,7 +41,7 @@ def build_option_parser():
 
     # Select ROM board to load to (mandatory)
     parser.add_argument(
-        '-r', '--romtype', choices = rom.get_board_ids(),
+        '-r', '--romtype', choices = board.get_board_ids(),
         help = 'Name of ROM board to load data into. This is mandatory ' +
                'parameter.')
 
@@ -89,7 +89,7 @@ def main():
         sys.exit()
 
     # Decode the input file
-    image = RomImage(rom.get_capacity(args.romtype), args.input)
+    image = RomImage(board.get_capacity(args.romtype), args.input)
     encoder = TungRomEncoder(args.romtype)
 
     # If an output file was specified, use that
