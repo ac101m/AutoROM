@@ -74,7 +74,7 @@ class TungRomEncoder:
         self.boardPath = get_board_path(boardID)
         self.jsonPath = get_json_path(boardID)
         b2j.board_to_json(self.boardPath, self.jsonPath)
-        self.baseJsonData = json.loads(open(self.jsonPath, 'rb').read())
+        self.baseJsonData = json.loads(open(self.jsonPath, 'r').read())
 
         # Select set_bit method for given ROM
         setBitMethodName = 'set_bit_' + boardID
@@ -91,16 +91,16 @@ class TungRomEncoder:
         try:
             for i, bit in enumerate(image.data):
                 if bit:
-                    self._set_bit(jsonData, i)
-        except Exception as e:
+                    self._set_bit(i, jsonData)
+        except MaxSizeException:
             print('WARNING: Image exceeds ROM size, image data truncated.')
         return jsonData
 
 
     # Set single bit
-    def _set_bit(self, index, jsonData):
-        if index < self.capacity:
-            self.set_bit_boardID(index)
+    def _set_bit(self, i, jsonData):
+        if i < self.capacity:
+            self.set_bit_boardID(i, jsonData)
         else:
             raise MaxSizeException(
                 'Failed to set bit, bit index out of range.')
@@ -125,5 +125,5 @@ class TungRomEncoder:
 #====[BOARD SPECIFIC SET_BIT IMPLEMENTATIONS HERE]============================//
 
     # Set bit for 16 by 16 matrix ROM
-    def set_bit_matrix_rom_16x16(self, index, jsonData):
+    def set_bit_matrix_rom_16x16(self, i, jsonData):
         print('WARNING: set_bit_matrix_rom_16x16 not yet implemented!')
