@@ -1,12 +1,11 @@
 {
-  "matrix_rom_16x16":
-  {
-    "path":"matrix-rom-16x16.tungboard",
-    "capacity":65536
+  "matrix_rom_16x16": {
+    "path": "matrix-rom-16x16.tungboard",
+    "capacity": 65536,
+    "md5": "14cd9b683428f6dbe4eac3286aef0dce"
   },
-  "matrix_rom_8x8":
-  {
-    "path":"matrix-rom-8x8.tungboard",
-    "capacity":4096
+  "matrix_rom_8x8": {
+    "path": "matrix-rom-8x8.tungboard",
+    "capacity": 4096
   }
 }

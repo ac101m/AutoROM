@@ -17,7 +17,7 @@ import autorom_b2j as b2j
 # Board registry info
 __BOARD_DIR = os.path.dirname(__file__) + '/boards'
 __BOARD_REGISTRY_PATH = __BOARD_DIR + '/board-registry.json'
-__BOARD_REGISTRY = json.loads(open(__BOARD_REGISTRY_PATH, 'r').read())
+__BOARD_REGISTRY = {}
 
 
 # Exception classes
@@ -66,6 +66,34 @@ def print_all():
         print(__BOARD_REGISTRY[key])
 
 
+# Get the md5 hash from the board registry, returns None if not found
+def get_registry_md5(boardID):
+    try:
+        return __BOARD_REGISTRY[boardID].get('md5', None)
+    except KeyError:
+        print("ERROR: Board registry error, No such board: '" + boardID + "'.")
+        sys.exit()
+
+
+# Update board md5 hash in the board registry
+def update_registry_md5(boardID, md5Sum):
+    try:
+        __BOARD_REGISTRY[boardID]['md5'] = md5Sum
+    except KeyError:
+        print("ERROR: Board registry error, No such board: '" + boardID + "'.")
+        sys.exit()
+    with open(__BOARD_REGISTRY_PATH, 'w') as file:
+        file.write(json.dumps(__BOARD_REGISTRY, indent = 2))
+
+
+# Attempt to load the board registry
+try:
+    __BOARD_REGISTRY = json.loads(open(__BOARD_REGISTRY_PATH, 'rb').read())
+except FileNotFoundError:
+    print("ERROR: Board registry not found. Nothing to be done.")
+    sys.exit()
+
+
 # Class serves as interface for modifying board contents
 class TungRomEncoder:
     jsonPath = None
@@ -79,11 +107,20 @@ class TungRomEncoder:
     def __init__(self, boardID):
         self.boardID = boardID
         self.capacity = get_capacity(boardID)
-
-        # Convert board to JSON and load
         self.boardPath = get_board_path(boardID)
         self.jsonPath = get_json_path(boardID)
-        b2j.board_to_json(self.boardPath, self.jsonPath)
+
+        # Convert to json (lazily, check md5 sum first)
+        md5Sum = util.md5_hex_digest(self.boardPath)
+        if os.path.isfile(self.jsonPath):
+            if get_registry_md5(boardID) != md5Sum:
+                b2j.board_to_json(self.boardPath, self.jsonPath)
+                update_registry_md5(boardID, md5Sum)
+        else:
+            b2j.board_to_json(self.boardPath, self.jsonPath)
+            update_registry_md5(boardID, md5Sum)
+
+        # Load data from the
         self.baseJsonData = json.loads(open(self.jsonPath, 'r').read())
 
         # Select set_bit method for given ROM
