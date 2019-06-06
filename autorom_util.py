@@ -4,6 +4,7 @@
 # standard
 import os
 import sys
+import hashlib
 
 
 # Simple true/false prompt
