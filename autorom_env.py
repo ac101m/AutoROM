@@ -14,7 +14,7 @@ __ENV_DICT = {}
 # Save the dictionary containing evironment variables
 def __save():
     with open(__ENV_PATH, "w") as file:
-        json.dump(__ENV_DICT, file)
+        json.dump(__ENV_DICT, file, indent = 2)
 
 
 # Load the environment variable dictionary
