@@ -49,6 +49,7 @@ def get_var(name):
 def clean():
     try:
         os.remove(__ENV_PATH)
+        print('Cleaned ' + __ENV_PATH)
     except FileNotFoundError:
         pass
 
