@@ -71,7 +71,7 @@ def main():
 
     # User requested board info
     if args.listrom:
-        rom.print_all()
+        board.print_all()
         return
 
     # Check that boardtojson (b2j) is present, if not, get it
