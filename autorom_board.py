@@ -41,7 +41,7 @@ def get_board_path(boardID):
 
 # Get json board path from ID
 def get_json_path(boardID):
-    return __BOARD_DIR + '/' + __BOARD_REGISTRY[boardID]['path'] + '.json'
+    return get_board_path(boardID) + '.json'
 
 
 # Get list of all board IDs
