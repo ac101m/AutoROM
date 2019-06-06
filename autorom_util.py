@@ -32,3 +32,12 @@ def find_file(fileName, dir):
             if os.path.basename(file) == fileName:
                 return os.path.join(root, file)
     return None
+
+
+# Get the hex md5 digest for a file
+def md5_hex_digest(path):
+    md5 = hashlib.md5()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            md5.update(chunk)
+    return md5.hexdigest()
