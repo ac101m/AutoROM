@@ -6,6 +6,7 @@ import os
 import sys
 import json
 import copy
+import importlib
 
 
 # This project
@@ -18,6 +19,14 @@ import autorom_b2j as b2j
 __BOARD_DIR = os.path.dirname(__file__) + '/boards'
 __BOARD_REGISTRY_PATH = __BOARD_DIR + '/board-registry.json'
 __BOARD_REGISTRY = {}
+
+
+# Attempt to load the board registry
+try:
+    __BOARD_REGISTRY = json.loads(open(__BOARD_REGISTRY_PATH, 'rb').read())
+except FileNotFoundError:
+    print("ERROR: Board registry not found. Nothing to be done.")
+    sys.exit()
 
 
 # Exception classes
@@ -42,6 +51,17 @@ def get_board_path(boardID):
 # Get json board path from ID
 def get_json_path(boardID):
     return get_board_path(boardID) + '.json'
+
+
+# Get module path from ID
+def get_module(boardID):
+    moduleName = __BOARD_REGISTRY[boardID]['module']
+    try:
+        return importlib.import_module(moduleName)
+    except Exception as e:
+        print("ERROR: Failed to load board module '" + moduleName + "'")
+        print(e)
+        sys.exit()
 
 
 # Get list of all board IDs
@@ -86,14 +106,6 @@ def update_registry_md5(boardID, md5Sum):
         file.write(json.dumps(__BOARD_REGISTRY, indent = 2))
 
 
-# Attempt to load the board registry
-try:
-    __BOARD_REGISTRY = json.loads(open(__BOARD_REGISTRY_PATH, 'rb').read())
-except FileNotFoundError:
-    print("ERROR: Board registry not found. Nothing to be done.")
-    sys.exit()
-
-
 # Class serves as interface for modifying board contents
 class TungRomEncoder:
     jsonPath = None
@@ -101,6 +113,7 @@ class TungRomEncoder:
     baseJsonData = None
     capacity = None
     boardID = None
+    boardModule = None
 
 
     # Initialise
@@ -120,16 +133,11 @@ class TungRomEncoder:
             b2j.board_to_json(self.boardPath, self.jsonPath)
             update_registry_md5(boardID, md5Sum)
 
-        # Load data from the
+        # Load json data
         self.baseJsonData = json.loads(open(self.jsonPath, 'r').read())
 
-        # Select set_bit method for given ROM
-        setBitMethodName = 'set_bit_' + boardID
-        try:
-            setattr(self, 'set_bit_boardID', getattr(self, setBitMethodName))
-        except:
-            print("ERROR: Couldn't find set_bit implementation for " + boardID)
-            sys.exit()
+        # Load the module responsible for this board type
+        self.boardModule = get_module(boardID)
 
 
     # Load bits from image
@@ -147,7 +155,7 @@ class TungRomEncoder:
     # Set single bit
     def _set_bit(self, i, jsonData):
         if i < self.capacity:
-            self.set_bit_boardID(i, jsonData)
+            self.boardModule.set_bit(i, jsonData)
         else:
             raise MaxSizeException(
                 'Failed to set bit, bit index out of range.')
@@ -167,10 +175,3 @@ class TungRomEncoder:
         # Convert back to tungboard
         b2j.json_to_board(tmpJsonPath, outputPath)
         os.remove(tmpJsonPath)
-
-
-#====[BOARD SPECIFIC SET_BIT IMPLEMENTATIONS HERE]============================//
-
-    # Set bit for 16 by 16 matrix ROM
-    def set_bit_matrix_rom_16x16(self, i, jsonData):
-        print('WARNING: set_bit_matrix_rom_16x16 not yet implemented!')
