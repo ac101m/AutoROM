@@ -7,8 +7,8 @@ from tkinter import filedialog
 
 
 # This project
-import autorom_env as env
-import autorom_util as util
+import util.env as env
+import util.misc as util
 
 
 # Name of environment variable for tung install directory

@@ -7,7 +7,7 @@ import json
 
 
 # Path to environment variable file
-__ENV_PATH = os.path.dirname(__file__) + '/env.json'
+__ENV_PATH = os.path.dirname(__file__) + '/data/env.json'
 __ENV_DICT = {}
 
 
