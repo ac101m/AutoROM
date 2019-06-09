@@ -1,5 +1,5 @@
 __pycache__/
-b2j/data/
+util/data/
+util/bin/
 board/data/*.json
 !board/data/board-registry.json
-env.json
