@@ -8,7 +8,7 @@ import copy
 
 
 # This project
-import board.registry as BoardRegistry
+import rom.registry as RomRegistry
 import util.b2j as b2j
 import util.misc as util
 
@@ -30,25 +30,25 @@ class TungRomEncoder:
     # Initialise
     def __init__(self, boardID):
         self.boardID = boardID
-        self.capacity = BoardRegistry.get_capacity(boardID)
-        self.boardPath = BoardRegistry.get_board_path(boardID)
-        self.jsonPath = BoardRegistry.get_json_path(boardID)
+        self.capacity = RomRegistry.get_capacity(boardID)
+        self.boardPath = RomRegistry.get_board_path(boardID)
+        self.jsonPath = RomRegistry.get_json_path(boardID)
 
         # Convert to json (lazily, check md5 sum first)
         md5Sum = util.md5_hex_digest(self.boardPath)
         if os.path.isfile(self.jsonPath):
-            if BoardRegistry.get_registry_md5(boardID) != md5Sum:
+            if RomRegistry.get_registry_md5(boardID) != md5Sum:
                 b2j.board_to_json(self.boardPath, self.jsonPath)
-                BoardRegistry.update_registry_md5(boardID, md5Sum)
+                RomRegistry.update_registry_md5(boardID, md5Sum)
         else:
             b2j.board_to_json(self.boardPath, self.jsonPath)
-            BoardRegistry.update_registry_md5(boardID, md5Sum)
+            RomRegistry.update_registry_md5(boardID, md5Sum)
 
         # Load json data
         self.baseJsonData = json.loads(open(self.jsonPath, 'r').read())
 
         # Load the module responsible for this board type
-        self.boardModule = BoardRegistry.get_module(boardID)
+        self.boardModule = RomRegistry.get_module(boardID)
 
 
     # Load bits from image

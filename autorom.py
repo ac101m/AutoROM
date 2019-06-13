@@ -10,10 +10,10 @@ import tkinter as tk
 
 
 # this project
-import board.registry as BoardRegistry
+import rom.registry as RomRegistry
 import util.env as env
 import util.b2j as b2j
-from board.encode import TungRomEncoder
+from rom.encode import TungRomEncoder
 from util.image import RomImage
 
 
@@ -41,7 +41,7 @@ def build_option_parser():
 
     # Select ROM board to load to (mandatory)
     parser.add_argument(
-        '-r', '--romtype', choices = BoardRegistry.get_board_ids(),
+        '-r', '--romtype', choices = RomRegistry.get_rom_ids(),
         help = 'Name of ROM board to load data into. This is mandatory ' +
                'parameter.')
 
@@ -65,13 +65,13 @@ def main():
     if args.clean:
         print("Cleaning local files...")
         b2j.uninstall()
-        BoardRegistry.clean()
+        RomRegistry.clean()
         env.clean()
         return
 
     # User requested board info
     if args.listrom:
-        BoardRegistry.print_all()
+        RomRegistry.print_all()
         return
 
     # Check that boardtojson (b2j) is present, if not, get it
@@ -90,7 +90,7 @@ def main():
         sys.exit()
 
     # Decode the input file
-    image = RomImage(BoardRegistry.get_capacity(args.romtype), args.input)
+    image = RomImage(RomRegistry.get_capacity(args.romtype), args.input)
     encoder = TungRomEncoder(args.romtype)
 
     # If an output file was specified, use that
