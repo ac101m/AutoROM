@@ -81,7 +81,7 @@ class TungRomEncoder:
         # Write new json data to temporary
         tmpJsonPath = outputPath + '.json'
         with open(tmpJsonPath, 'w') as file:
-            file.write(json.dumps(jsonData))
+            file.write(json.dumps(jsonData, indent = 2))
 
         # Convert back to tungboard
         b2j.json_to_board(tmpJsonPath, outputPath)
