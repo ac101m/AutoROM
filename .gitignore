@@ -1,6 +1,6 @@
 __pycache__/
 util/data/
 util/bin/
-board/data/*.json
+rom/data/*.json
 !board/data/board-registry.json
 tests/
