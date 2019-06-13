@@ -3,3 +3,4 @@ util/data/
 util/bin/
 board/data/*.json
 !board/data/board-registry.json
+tests/
