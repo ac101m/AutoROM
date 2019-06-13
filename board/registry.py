@@ -47,8 +47,9 @@ def get_module(boardID):
     moduleName = __BOARD_REGISTRY[boardID]['module']
     try:
         return importlib.import_module(moduleName)
-    except ModuleNotFoundError:
+    except ModuleNotFoundError as e:
         print("ERROR: Failed to load board module '" + moduleName + "'")
+        print(e)
         sys.exit()
 
 
