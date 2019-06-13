@@ -18,7 +18,7 @@ import util.tung as tung
 
 # Where to find board to json
 __B2J_URL = 'https://github.com/Stenodyon/BoardToJson/releases/download/1.0/BoardToJson.zip'
-__B2J_BIN_DIR = os.path.dirname(__file__) + '/bin'
+__B2J_BIN_DIR = os.path.join(os.path.dirname(__file__), 'bin')
 
 
 # Valid md5 strings for b2j.zip
@@ -50,7 +50,7 @@ def install():
         os.mkdir(__B2J_BIN_DIR)
 
     # Download board to json binaries
-    b2jZipPath = __B2J_BIN_DIR + '/b2j.zip'
+    b2jZipPath = os.path.join(__B2J_BIN_DIR, 'b2j.zip')
     urllib.request.urlretrieve(__B2J_URL, b2jZipPath)
 
     # Check file hashes against known good md5 checksums
@@ -76,12 +76,13 @@ def install():
         sys.exit()
     else:
         print('Located game assembly at ' + tungAsmPath)
-        shutil.copyfile(tungAsmPath, __B2J_BIN_DIR + '/' + tungAsmFile)
+        shutil.copyfile(tungAsmPath, os.path.join(__B2J_BIN_DIR, tungAsmFile))
         print('B2J install successful!')
 
     # On linux, give execute permissions to B2J executable
     if platform.system() == 'Linux':
-        command = ['chmod', '+x', __B2J_BIN_DIR + '/BoardToJson.exe']
+        executablePath = os.path.join(__B2J_BIN_DIR, 'BoardToJson.exe')
+        command = ['chmod', '+x', executablePath]
         subprocess.call(command, shell = False)
 
 
@@ -97,11 +98,13 @@ def uninstall():
 
 # convert tung board to json
 def board_to_json(boardPath, jsonPath):
-    command = [__B2J_BIN_DIR + '/BoardToJson.exe', boardPath, '-i', '-o', jsonPath]
+    executablePath = os.path.join(__B2J_BIN_DIR, 'BoardToJson.exe')
+    command = [executablePath, boardPath, '-i', '-o', jsonPath]
     subprocess.call(command, shell = False, stdout = subprocess.DEVNULL)
 
 
 # convert json to tung board
 def json_to_board(jsonPath, boardPath):
-    command = [__B2J_BIN_DIR + '/BoardToJson.exe', jsonPath, '-i', '-o', boardPath]
+    executablePath = os.path.join(__B2J_BIN_DIR, 'BoardToJson.exe')
+    command = [executablePath, jsonPath, '-i', '-o', boardPath]
     subprocess.call(command, shell = False, stdout = subprocess.DEVNULL)

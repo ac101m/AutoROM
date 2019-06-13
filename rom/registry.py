@@ -9,14 +9,14 @@ import importlib
 
 
 # Paths to board and registry
-__BOARD_DATA_DIR = os.path.dirname(__file__) + '/data'
-__BOARD_REGISTRY_PATH = __BOARD_DATA_DIR + '/rom-registry.json'
+__BOARD_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
+__BOARD_REGISTRY_PATH = os.path.join(__BOARD_DATA_DIR, 'rom-registry.json')
 
 
 # Attempt to load the board registry
 __BOARD_REGISTRY = {}
 try:
-    __BOARD_REGISTRY = json.loads(open(__BOARD_REGISTRY_PATH, 'rb').read())
+    __BOARD_REGISTRY = json.loads(open(__BOARD_REGISTRY_PATH, 'r').read())
 except FileNotFoundError:
     print("ERROR: Board registry not found. Nothing to be done.")
     sys.exit()
@@ -34,7 +34,7 @@ def clean():
 
 # Get board path from ID
 def get_board_path(boardID):
-    return __BOARD_DATA_DIR + '/' + __BOARD_REGISTRY[boardID]['path']
+    return os.path.join(__BOARD_DATA_DIR, __BOARD_REGISTRY[boardID]['path'])
 
 
 # Get json board path from ID
