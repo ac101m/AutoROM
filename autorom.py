@@ -94,11 +94,14 @@ def main():
     encoder = TungRomEncoder(args.romtype)
 
     # If an output file was specified, use that
-    # Otherwise, generate automatic name
-    outputFile = args.output
-    if outputFile == None:
-        inName, inExt = os.path.splitext(args.input)
-        outputFile = args.romtype + '(' + inName + ').tungboard'
+    # Otherwise, generate default name
+    inFile = os.path.basename(args.input)
+    outputFile = args.romtype + '(' + inFile + ').tungboard'
+    if args.output != None:
+        if os.path.isdir(args.output):
+            outputFile = os.path.join(args.output, outputFile)
+        else:
+            outputFile = args.output
 
     # Output the ROM
     encoder.encode(outputFile, image)
