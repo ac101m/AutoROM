@@ -81,12 +81,12 @@ def main():
 
     # Get input file as ROM image
     if args.input == None:
-        print("ERROR: No input file specified, please specify an input file")
+        print("ERROR: No input file specified. Please specify an input file.")
         sys.exit()
 
     # Get ROM type
     if args.romtype == None:
-        print('ERROR: No ROM type specified, please specify a ROM type')
+        print('ERROR: No ROM type specified. Please specify a ROM type.')
         sys.exit()
 
     # Decode the input file
@@ -97,9 +97,7 @@ def main():
               "Nothing to be done.")
         sys.exit()
 
-
-    # If an output file was specified, use that
-    # Otherwise, generate default name
+    # Compute path for output file
     inFile = os.path.basename(args.input)
     outputFile = args.romtype + '(' + inFile + ').tungboard'
     if args.output != None:
