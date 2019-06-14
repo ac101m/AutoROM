@@ -90,8 +90,13 @@ def main():
         sys.exit()
 
     # Decode the input file
-    image = RomImage(RomRegistry.get_capacity(args.romtype), args.input)
-    encoder = TungRomEncoder(args.romtype)
+    try:
+        image = RomImage(RomRegistry.get_capacity(args.romtype), args.input)
+    except FileNotFoundError:
+        print("ERROR: Input file '" + args.input + "' not found. " +
+              "Nothing to be done.")
+        sys.exit()
+
 
     # If an output file was specified, use that
     # Otherwise, generate default name
@@ -104,6 +109,7 @@ def main():
             outputFile = args.output
 
     # Output the ROM
+    encoder = TungRomEncoder(args.romtype)
     encoder.encode(outputFile, image)
 
 
