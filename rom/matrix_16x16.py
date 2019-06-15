@@ -22,8 +22,8 @@ def set_bit(i, jsonData):
     posDelta = np.array([0.0, 0.3, -0.3])
 
     # Position of wires @ index 0
-    wireStartPos = np.array([6.42100264, -4.7250185, 7.0499835])
-    wireEndPos = np.array([7.20500444, -4.7250185, 7.0499835])
+    wireStartPos = np.array([6.42100068, -4.72500229, 4.95])
+    wireEndPos = np.array([7.20500068, -4.72500229, 4.95])
 
     # Compute wire start and end positions from indices
     wireStartPos += posDelta * majorIndexVec
