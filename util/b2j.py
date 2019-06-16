@@ -100,11 +100,18 @@ def uninstall():
 def board_to_json(boardPath, jsonPath):
     executablePath = os.path.join(__B2J_BIN_DIR, 'BoardToJson.exe')
     command = [executablePath, boardPath, '-i', '-o', jsonPath]
-    subprocess.call(command, shell = False, stdout = subprocess.DEVNULL)
+    subprocess.check_call(
+        command,
+        shell = False,
+        stdout = subprocess.DEVNULL,
+        stderr = subprocess.DEVNULL)
 
 
 # convert json to tung board
 def json_to_board(jsonPath, boardPath):
     executablePath = os.path.join(__B2J_BIN_DIR, 'BoardToJson.exe')
     command = [executablePath, jsonPath, '-i', '-o', boardPath]
-    subprocess.call(command, shell = False, stdout = subprocess.DEVNULL)
+    subprocess.check_call(
+        command, shell = False,
+        stdout = subprocess.DEVNULL,
+        stderr = subprocess.DEVNULL)
