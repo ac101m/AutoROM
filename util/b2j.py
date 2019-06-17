@@ -46,7 +46,9 @@ def installed():
 
 # Install boardtojson
 def install():
-    os.makedirs(os.path.dirname(__B2J_BIN_DIR))
+
+    # Make directory if missing
+    os.makedirs(__B2J_BIN_DIR, exist_ok = True)
 
     # Download board to json binaries
     b2jZipPath = os.path.join(__B2J_BIN_DIR, 'b2j.zip')

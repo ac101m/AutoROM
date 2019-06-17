@@ -14,7 +14,10 @@ __ENV_DICT = {}
 
 # Save the dictionary containing evironment variables
 def __save():
-    os.makedirs(os.path.dirname(__ENV_PATH))
+
+    # Make directory if missing
+    os.makedirs(os.path.dirname(__ENV_PATH), exist_ok = True)
+
     with open(__ENV_PATH, "w") as file:
         json.dump(__ENV_DICT, file, indent = 2)
 
