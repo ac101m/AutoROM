@@ -8,5 +8,10 @@
     "capacity": 4096,
     "path": "matrix-8x8-64.tungboard",
     "module": "rom.matrix_8x8"
+  },
+  "matrix_rom_8x8_8": {
+    "capacity": 4096,
+    "path": "matrix-8x8-8.tungboard",
+    "module": "rom.matrix_8x8"
   }
 }
