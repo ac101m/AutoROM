@@ -1,7 +1,5 @@
-#!/usr/bin/env python3
 
-
-#standard
+# Standard
 import os
 import platform
 import subprocess
@@ -11,7 +9,7 @@ import zipfile
 import urllib.request
 
 
-# this project
+# This project
 import util.misc as util
 import util.tung as tung
 

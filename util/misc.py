@@ -1,7 +1,5 @@
-#!/usr/bin/env python3
 
-
-# standard
+# Standard
 import os
 import sys
 import hashlib
