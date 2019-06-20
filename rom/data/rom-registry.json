@@ -4,6 +4,11 @@
     "path": "matrix-16x16-256.tungboard",
     "module": "rom.matrix_16x16"
   },
+  "matrix_rom_16x16_16": {
+    "capacity": 65536,
+    "path": "matrix-16x16-16.tungboard",
+    "module": "rom.matrix_16x16"
+  },
   "matrix_rom_8x8_64": {
     "capacity": 4096,
     "path": "matrix-8x8-64.tungboard",
