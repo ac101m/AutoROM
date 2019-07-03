@@ -131,7 +131,7 @@ class RomImage:
             else:
                 print("WARNING: '" + ext + "' is not a recognised extension, " +
                       'file will be treated as raw bytes')
-                self.init_raw(path, maxBits)
+                self.init_raw(path)
 
         except MaxSizeException:
             print('WARNING: File exceeds image size, data truncated.')
